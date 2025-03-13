@@ -55,19 +55,6 @@ export default function Home() {
 
       {messages.length === 0 && (
         <div className="text-center text-slate-500">
-          {
-            /* <h1 className="font-serif" style={{ fontSize: "48px" }}>
-            Welcome to the BioBot
-          </h1>
-          <p className="font-sans" style={{ fontSize: "16px" }}>
-            Ask the BioBot about everyperson you know and it will search the
-            internet for this person and creates with the information provided a
-            nice exciting short story
-          </p>
-          <p className="font-sans" style={{ fontSize: "16px" }}>
-            You dont know what to promt, here are some examples.
-          </p> */
-          }
           <h1
             className="font-serif pb-4"
             style={{ fontSize: "48px", lineHeight: "1.2" }}

@@ -1,8 +1,6 @@
 import {
     ArticleAvatar,
-    ArticleCard,
     ArticleContent,
-    ArticleFooter,
     ArticleHeader,
     ArticleLead,
     ArticleSubtitle,
@@ -15,10 +13,8 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import Popover from "@/components/ui/popover";
-import Tooltip from "@/components/ui/tooltip";
 import { useChat } from "@ai-sdk/react";
-import { Info, Link } from "lucide-react";
+import { Link } from "lucide-react";
 import { useState } from "react";
 
 type ChatReturnType = ReturnType<typeof useChat>;
@@ -37,8 +33,11 @@ const ArticelParts = ({ part }: { part: MessagePart }) => {
             toolInvocation.toolName === "online_journalist" &&
             toolInvocation.state === "result"
         ) {
-            const result: { name: string; images: ImageProps[] } =
-                toolInvocation.result;
+            const result: {
+                name: string;
+                images: ImageProps[];
+                story: string;
+            } = toolInvocation.result;
             console.log("result", result);
 
             interface ImageProps {
@@ -47,28 +46,6 @@ const ArticelParts = ({ part }: { part: MessagePart }) => {
                 source: string;
                 contextLink: string;
             }
-
-            // const formatLinks = (text: string) => {
-            //     const linkRegex = /\((https?:\/\/[^\s)]+)\)/g; // Regex to detect URLs in parentheses
-            //     const matches = [...text.matchAll(linkRegex)];
-
-            //     console.log("matches", matches);
-            //     return {
-            //         title: text.split("\n")[0], // First line as the title
-            //         subtitle: text.replace(linkRegex, "").trim(), // Remove links from text
-            //         links: matches.map((match) => match[1]), // Extracted URLs
-            //     };
-            // };
-
-            // const rawTexts: string[] = []; // Define rawTexts as an empty array or populate it with actual data
-            // const sourceItems = rawTexts.map((text) => {
-            //     const { title, subtitle, links } = formatLinks(result.story);
-            //     return {
-            //         title,
-            //         subtitle,
-            //         link: links.length > 0 ? links[0] : "", // Use first extracted link
-            //     };
-            // });
 
             const formatLinks = (story: string) => {
                 const linkRegex = /\((https?:\/\/[^\s)]+)\)/g; // Regex to detect URLs in parentheses
@@ -200,7 +177,7 @@ const ArticelParts = ({ part }: { part: MessagePart }) => {
                         A story about
                     </ArticleTitle>
                     <ArticleSubtitle>
-                        {result.name}
+                        {result?.name}
                     </ArticleSubtitle>
                     {result?.images.length > 2 && (
                         <ArticleAvatar
