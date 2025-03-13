@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, PT_Serif } from "next/font/google";
 import "./globals.css";
 
+// Your existing fonts
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -10,6 +11,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// New PT Serif font
+const ptSerif = PT_Serif({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-pt-serif",
 });
 
 export const metadata: Metadata = {
@@ -25,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${ptSerif.variable} ${geistSans.variable} ${geistMono.variable} antialiased font-serif`}
       >
         {children}
       </body>

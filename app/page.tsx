@@ -9,112 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useChat } from "@ai-sdk/react";
 import { useEffect, useRef, useState } from "react";
 import Tooltip from "@/components/ui/tooltip";
-
-type ChatReturnType = ReturnType<typeof useChat>;
-type Message = ChatReturnType["messages"][number];
-type MessagePart = Message["parts"][number];
-
-const MessagePart = ({ part }: { part: MessagePart }) => {
-  if (!part) return null;
-
-  if (part.type === "tool-invocation") {
-    const { toolInvocation } = part;
-
-    if (
-      toolInvocation.toolName === "online_journalist" &&
-      toolInvocation.state === "result"
-    ) {
-      const { result } = toolInvocation;
-
-      interface ImageProps {
-        title: string;
-        image: string;
-        source: string;
-        contextLink: string;
-      }
-
-      // Function to render search result links as small icons
-      const formatLinks = (story: string) => {
-        const linkRegex = /\((https?:\/\/[^\s)]+)\)/g; // Regex to detect URLs in parentheses
-        return story.split("\n").map((line, index) => {
-          const matches = [...line.matchAll(linkRegex)];
-          if (matches.length > 0) {
-            return (
-              <div key={index} className="flex items-center gap-2">
-                {line.replace(linkRegex, "").trim()}{" "}
-                {matches.map((match, i) => (
-                  <Tooltip key={i} text={match[1]}>
-                    <a
-                      href={match[1]}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 hover:text-blue-700"
-                    >
-                      <Link size={16} />
-                    </a>
-                  </Tooltip>
-                ))}
-              </div>
-            );
-          }
-          return <p key={index}>{line}</p>;
-        });
-      };
-
-      return (
-        <div className="">
-          <h3 className="font-medium text-lg">Story</h3>
-          {/* Display all references found in the google search */}
-          {/* <div className="space-y-2">{formatLinks(result.story)}</div> */}
-
-          {/* Display images if available */}
-          {Array.isArray(result.images) && result.images.length > 0 && (
-            console.log(result.images),
-              (
-                <div className="mt-4">
-                  <h4 className="font-medium text-md">Related Images:</h4>
-                  <div className="flex flex-row w-full gap-2 overflow-x-auto">
-                    {result.images.map((img: ImageProps, index: number) => (
-                      <div
-                        key={index}
-                        className="border rounded-lg overflow-hidden p-2"
-                      >
-                        <img
-                          src={img?.image}
-                          alt={`Related image ${index + 1}`}
-                          className=" w-auto object-cover aspect-square h-24"
-                        />
-
-                        <p className="text-sm text-gray-500  ">
-                          {img?.title}
-                        </p>
-                        <a
-                          href={img?.source}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-500 text-xs"
-                        >
-                          Source
-                        </a>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )
-          )}
-        </div>
-      );
-    }
-
-    return null;
-  }
-
-  if (part.type === "text") {
-    return <div>{part.text}</div>;
-  }
-
-  return null;
-};
+import ArticelParts from "./messages";
+import { ArticleCard, ArticleFooter } from "@/components/ui/article";
 
 export default function Home() {
   const { messages, input, setInput, status, handleInputChange, handleSubmit } =
@@ -140,12 +36,92 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col relative w-full max-w-[50%] py-24 mx-auto stretch gap-6 pb-[200px]">
+    <div className="flex flex-col relative w-full max-w-[50%] py-24 mx-auto stretch gap-6 pb-[200px] ">
+      <div className=" fixed top-12 left-12 justify-center items-center h-16 w-16  rounded-full flex flex-row gap-2">
+        <div>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            fill="#000000"
+            viewBox="0 0 256 256"
+          >
+            <path d="M200,48H136V16a8,8,0,0,0-16,0V48H56A32,32,0,0,0,24,80V192a32,32,0,0,0,32,32H200a32,32,0,0,0,32-32V80A32,32,0,0,0,200,48Zm16,144a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V80A16,16,0,0,1,56,64H200a16,16,0,0,1,16,16Zm-52-56H92a28,28,0,0,0,0,56h72a28,28,0,0,0,0-56Zm-24,16v24H116V152ZM80,164a12,12,0,0,1,12-12h8v24H92A12,12,0,0,1,80,164Zm84,12h-8V152h8a12,12,0,0,1,0,24ZM72,108a12,12,0,1,1,12,12A12,12,0,0,1,72,108Zm88,0a12,12,0,1,1,12,12A12,12,0,0,1,160,108Z">
+            </path>
+          </svg>
+        </div>
+        <h5 className="font-bold" style={{ fontSize: "24px" }}>BioBot</h5>
+      </div>
+
       {messages.length === 0 && (
         <div className="text-center text-slate-500">
-          The intergalactic weather assistant is here to help you with the
-          weather and what to wear. Try asking it about the weather in any place
-          in the galaxy or what to wear based on the weather. 🪐
+          {
+            /* <h1 className="font-serif" style={{ fontSize: "48px" }}>
+            Welcome to the BioBot
+          </h1>
+          <p className="font-sans" style={{ fontSize: "16px" }}>
+            Ask the BioBot about everyperson you know and it will search the
+            internet for this person and creates with the information provided a
+            nice exciting short story
+          </p>
+          <p className="font-sans" style={{ fontSize: "16px" }}>
+            You dont know what to promt, here are some examples.
+          </p> */
+          }
+          <h1
+            className="font-serif pb-4"
+            style={{ fontSize: "48px", lineHeight: "1.2" }}
+          >
+            Welcome to BioBot Your Personal Storyteller!
+          </h1>
+          <p className="font-sans" style={{ fontSize: "16px" }}>
+            Ever wondered what the internet knows about someone? BioBot is here
+            to turn online breadcrumbs into a thrilling, quirky, or downright
+            mysterious short story about anyone you have in mind. Just ask, and
+            let the magic happen!
+          </p>
+
+          <p className="font-sans pt-4 pb-2" style={{ fontSize: "14px" }}>
+            Not sure what to ask? No worries – here are some fun prompts to get
+            you started!
+          </p>
+
+          <div className="flex flex-row gap-2 pb-2 w-full justify-center ">
+            <Button
+              variant="secondary"
+              onClick={() =>
+                setInput(
+                  "Write me a story about Joni Juup from Helsinki who works for intentface",
+                )}
+            >
+              👑 Joni Juup
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() =>
+                setInput(
+                  "Write me a story about Florian Wachter from Stockholm",
+                )}
+            >
+              Florian
+            </Button>
+
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setInput("Write me a story about Jack White");
+              }}
+            >
+              Jack White
+            </Button>
+
+            <Button
+              variant="secondary"
+              onClick={() => setInput("Write me a story about Amy Winehouse")}
+            >
+              Amy Winehouse
+            </Button>
+          </div>
         </div>
       )}
       {messages.map((m) => (
@@ -154,12 +130,6 @@ export default function Home() {
             ? (
               <div className="flex gap-2 w-full  p-4 justify-end">
                 <div className=" flex flex-col gap-2 items-end justify-center p-4 rounded-xl">
-                  {
-                    /* <Avatar>
-                    <AvatarImage src="https://mighty.tools/mockmind-api/content/alien/16.jpg" />
-                    <AvatarFallback>Me</AvatarFallback>
-                  </Avatar> */
-                  }
                   <div>{m.content}</div>
                   <div className="text-center text-slate-500">
                     <StaticTimestamp />
@@ -168,26 +138,30 @@ export default function Home() {
               </div>
             )
             : (
-              <div className="flex gap-2">
-                <div className="flex flex-col gap-2 items-start justify-center bg-slate-100 p-4 rounded-xl">
-                  <div className="flex flex-row gap-2 items-center">
-                    <Avatar>
-                      <AvatarImage src="https://mighty.tools/mockmind-api/content/abstract/23.jpg" />
-                      <AvatarFallback>AI</AvatarFallback>
-                    </Avatar>
-                    <h2 className=" font-bold">Artifical Integligent</h2>
-                  </div>
+              <>
+                <div className="flex gap-2">
+                  <div className="flex flex-col gap-2 items-start justify-center">
+                    <div className="flex flex-row gap-2 items-center">
+                      <Avatar>
+                        <AvatarImage src="https://mighty.tools/mockmind-api/content/abstract/23.jpg" />
+                        <AvatarFallback>AI</AvatarFallback>
+                      </Avatar>
+                      <h2 className=" font-bold">Artifical Integligent</h2>
+                    </div>
 
-                  <div className="flex-1">
-                    {m.parts?.map((part, index) => (
-                      <MessagePart key={index} part={part} />
-                    ))}
-                  </div>
-                  <div className="text-center text-slate-500 w-full flex justify-end">
-                    <StaticTimestamp />
+                    <ArticleCard className="max-w-md mx-auto relative">
+                      <div className="flex-1">
+                        {m.parts?.map((part, index) => (
+                          <ArticelParts key={index} part={part} />
+                        ))}
+                      </div>
+                      <ArticleFooter>
+                        <StaticTimestamp />
+                      </ArticleFooter>
+                    </ArticleCard>
                   </div>
                 </div>
-              </div>
+              </>
             )}
         </div>
       ))}
@@ -198,30 +172,6 @@ export default function Home() {
         className="fixed bottom-0 z-10 right-0 mb-8 w-full flex items-center justify-center"
       >
         <div className="relative w-full max-w-[50%] mx-auto">
-          <div className="flex flex-row gap-2 pb-2">
-            <Button
-              variant="secondary"
-              onClick={() =>
-                setInput(
-                  "Write me a story about Florian Wachter from Stockholm",
-                )}
-            >
-              👑 Florian
-            </Button>
-
-            <Button
-              variant="secondary"
-              onClick={() => setInput("Write me a story about Jack White")}
-            >
-              Jack White
-            </Button>
-            <Button
-              variant="secondary"
-              onClick={() => setInput("Write me a story about Amy Winehouse")}
-            >
-              Amy Winehouse
-            </Button>
-          </div>
           <Textarea
             className="dark:bg-zinc-900 bg-white/50 backdrop-blur-xl rounded-xl w-full pb-[60px] border border-zinc-300 dark:border-zinc-800 shadow-xl"
             value={input}

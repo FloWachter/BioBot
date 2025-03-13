@@ -9,7 +9,38 @@ export default {
   ],
   theme: {
   	extend: {
+		fontFamily: {
+			serif: ["var(--font-serif)", "serif"],
+			sans: ["var(--font-sans)", "sans-serif"],
+			mono: ["var(--font-mono)", "monospace"],
+		},
   		colors: {
+			"orange-peel": {
+				50: "var(--color-orange-peel-50)",
+				100: "var(--color-orange-peel-100)",
+				200: "var(--color-orange-peel-200)",
+				300: "var(--color-orange-peel-300)",
+				400: "var(--color-orange-peel-400)",
+				500: "var(--color-orange-peel-500)",
+				600: "var(--color-orange-peel-600)",
+				700: "var(--color-orange-peel-700)",
+				800: "var(--color-orange-peel-800)",
+				900: "var(--color-orange-peel-900)",
+				950: "var(--color-orange-peel-950)",
+			},
+			shark: {
+				50: "var(--color-shark-50)",
+				100: "var(--color-shark-100)",
+				200: "var(--color-shark-200)",
+				300: "var(--color-shark-300)",
+				400: "var(--color-shark-400)",
+				500: "var(--color-shark-500)",
+				600: "var(--color-shark-600)",
+				700: "var(--color-shark-700)",
+				800: "var(--color-shark-800)",
+				900: "var(--color-shark-900)",
+			},
+
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
