@@ -3,7 +3,7 @@
 BioBot is a tool for automating biographical writing. It utilizes various APIs to research information and generate well-structured biographies.
 
 [![Watch the video](https://img.youtube.com/vi/WNIm9nJUT0I/0.jpg)](https://youtu.be/WNIm9nJUT0I)
-▶️ [Watch the BioBot Introduction Video]([https://youtu.be/2Whmb22UZqg](https://youtu.be/WNIm9nJUT0I))
+▶️ [Yotube Video](https://youtu.be/WNIm9nJUT0I)
 
 
 ## 🚀 Setup
